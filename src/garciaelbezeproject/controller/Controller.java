@@ -52,9 +52,7 @@ public class Controller implements Observer, ChangeListener{
                     break;
                 case 0 : 
                     handleState = DOWN;                
-                    for(GearSet gearSet : gearSetList){         
                         this.bringOutGearSet();
-                    }
                     break;
             }
         }
@@ -121,9 +119,6 @@ public class Controller implements Observer, ChangeListener{
                 }
                 if((int)arg==1){
                 mainFrame.jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/feu_orange.jpg")));
-                JLabel test = new JLabel();
-                test.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/feu_orange.jpg")));
-                mainFrame.add(test);
                 mainFrame.porte1.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_moving.jpg")));
                 mainFrame.porte2.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_moving.jpg")));
                 mainFrame.porte3.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_moving.jpg")));
