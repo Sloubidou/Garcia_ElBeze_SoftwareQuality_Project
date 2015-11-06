@@ -11,6 +11,7 @@ import java.util.Observable;
 import java.util.Observer;
 import garciaelbezeproject.view.mainJFrame;
 import javax.swing.JSlider;
+import javax.swing.JLabel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 /**
@@ -35,43 +36,122 @@ public class Controller implements Observer, ChangeListener{
         for(GearSet gearSet : gearSetList){
             gearSet.addObserver(this);
         }
-	mainFrame.slider.addChangeListener(this);
+	this.mainFrame.slider.addChangeListener(this);
     } 
     
     @Override
-    public void stateChanged(ChangeEvent event) {
-	JSlider source = (JSlider)event.getSource();
-	if(!source.getValueIsAdjusting()){
+    public void stateChanged(ChangeEvent e) {                   
+	JSlider source = (JSlider)e.getSource(); 
+
+        if(!source.getValueIsAdjusting()){
+         
             switch(source.getValue()){
-                case 0 :
+                case 1 :
                     handleState = UP;
-                    for(GearSet gearSet : gearSetList){
-                        gearSet.setDoorState("open");
-                    }
+                    this.bringInGearSet();
                     break;
-                case 1 : 
-                    handleState = DOWN;
-                    for(GearSet gearSet : gearSetList){
-                        gearSet.setDoorState("open");
+                case 0 : 
+                    handleState = DOWN;                
+                    for(GearSet gearSet : gearSetList){         
+                        this.bringOutGearSet();
                     }
                     break;
             }
         }
     }
-    
-    @Override
-    public void update(Observable o, Object arg) {
-        System.out.println(arg);
-        if (arg == "close"){
-            System.out.println("CLOSE");
-        }        
-        else if (arg == "open"){
-            System.out.println("OPEN");
-        }        
-        else if (arg == "moving"){
-            System.out.println("moving");
+    public void bringInGearSet(){
+        for(GearSet gearSet : gearSetList){         
+            gearSet.setState(4, handleState);
         }
-      
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {}
+
+        for(GearSet gearSet : gearSetList){         
+            gearSet.setState(3, handleState);
+        }
+        try {
+             Thread.sleep(5000);
+        } catch (InterruptedException e) {} 
+        
+        for(GearSet gearSet : gearSetList){        
+            gearSet.setState(2, handleState);
+        }
+        try {
+             Thread.sleep(5000);
+         } catch (InterruptedException e) {}  
+        for(GearSet gearSet : gearSetList){         
+            gearSet.setState(1, handleState);
+        }
     }
     
+    
+    public void bringOutGearSet(){
+        for(GearSet gearSet : gearSetList){         
+            gearSet.setState(0, handleState);
+        }
+      
+        for(GearSet gearSet : gearSetList){         
+            gearSet.setState(1, handleState);
+        }
+     try {
+           Thread.sleep(5000);
+        } catch (InterruptedException e) {} 
+      
+        for(GearSet gearSet : gearSetList){        
+            gearSet.setState(2, handleState);
+        }
+
+        try {
+            Thread.sleep(5000);
+         } catch (InterruptedException e) {} 
+               
+        for(GearSet gearSet : gearSetList){         
+            gearSet.setState(3, handleState);
+        }
+    }
+    @Override
+    public void update(Observable o, Object arg) {
+            if(handleState=UP){
+            }
+            else if(handleState=DOWN){
+                
+                if((int)arg==0){
+                System.out.println("0");
+                }
+                if((int)arg==1){
+                mainFrame.jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/feu_orange.jpg")));
+                JLabel test = new JLabel();
+                test.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/feu_orange.jpg")));
+                mainFrame.add(test);
+                mainFrame.porte1.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_moving.jpg")));
+                mainFrame.porte2.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_moving.jpg")));
+                mainFrame.porte3.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_moving.jpg")));
+
+                System.out.println("1");
+      
+                }
+                if((int)arg==2){
+                mainFrame.porte1.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_opened.jpg")));
+                mainFrame.porte2.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_opened.jpg")));
+                mainFrame.porte3.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_opened.jpg")));
+                System.out.println("2");
+                
+                }
+                if((int)arg==3){
+                mainFrame.porte1.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_moving.jpg")));
+                mainFrame.porte2.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_moving.jpg")));
+                mainFrame.porte3.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_moving.jpg")));
+                System.out.println("3");
+                
+                }
+                if((int)arg==4){
+                mainFrame.porte1.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_closed.jpg")));
+                mainFrame.porte2.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_closed.jpg")));
+                mainFrame.porte3.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/door2_closed.jpg")));
+                mainFrame.jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("../View/feu_vert.jpg")));
+                System.out.println("4");
+                }
+            }
+    }
 }
